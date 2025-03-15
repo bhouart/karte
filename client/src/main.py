@@ -27,4 +27,4 @@ if __name__ == "__main__":
     load_dotenv()
     ip = os.getenv("IP")
     port = os.getenv("PORT")
-    asyncio.run(chat())
+    asyncio.run(chat(ip, port))
