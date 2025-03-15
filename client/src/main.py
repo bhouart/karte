@@ -1,18 +1,30 @@
 import asyncio
 import websockets
+from dotenv import load_dotenv
+import os
 
-# Function to handle the chat client
-async def chat():
-    async with websockets.connect('ws://localhost:8765') as websocket:
-        while True:
-            # Prompt the user for a message
-            message = input("Enter message: ")
-            # Send the message to the server
-            await websocket.send(message)
-            # Receive a message from the server
-            response = await websocket.recv()
-            print(f"Received: {response}")
 
-# Run the client
+async def read_input(prompt="Enter message: "):
+    loop = asyncio.get_event_loop()
+    return await loop.run_in_executor(None, input, prompt)
+
+async def send_message(websocket):
+    while True:
+        message = await read_input()
+        await websocket.send(message)
+
+async def receive_message(websocket):
+    while True:
+        response = await websocket.recv()
+        print(f"Received: {response}")
+
+async def chat(ip, port):
+    async with websockets.connect(f'ws://{ip}:{port}') as websocket:
+        # Run sending and receiving concurrently
+        await asyncio.gather(send_message(websocket), receive_message(websocket))
+
 if __name__ == "__main__":
+    load_dotenv()
+    ip = os.getenv("IP")
+    port = os.getenv("PORT")
     asyncio.run(chat())
