@@ -8,6 +8,7 @@ class Deck:
         self.cards = cards if cards is not None else []
         if not cards:
             self.__create_full_deck()
+            self.shuffle()
         
     def __create_full_deck(self):
         # Iterate directly over enum members.
@@ -31,7 +32,3 @@ class Deck:
             return self.cards.pop()
         return None
 
-if __name__ == "__main__":
-    deck = Deck()
-    for card in deck.cards:
-        print(card)
