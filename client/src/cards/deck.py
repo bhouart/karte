@@ -20,15 +20,20 @@ class Deck:
         """Shuffles cards in the deck randomly."""
         shuffle(self.cards)
     
-    def get_first(self):
+    def get_first(self, remove = True):
         """Gets first card from the deck."""
         if self.cards:
-            return self.cards.pop(0)
+            return self.cards.pop(0) if remove else self.cards[0]
         return None
     
-    def get_last(self):
+    def get_last(self, remove = True):
         """Gets last card from the deck."""
         if self.cards:
-            return self.cards.pop()
+            return self.cards.pop() if remove else self.cards[-1]
         return None
+    
+    def remove_card(self, card):
+        """Removes a card from the deck."""
+        if card in self.cards:
+            self.cards.remove(card)
 
